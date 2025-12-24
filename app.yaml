@@ -1,0 +1,7 @@
+runtime: go123
+instance_class: F1
+service: go-app-1 # or you'll get the "default"!
+
+handlers:
+  - url: /.*
+    script: auto
