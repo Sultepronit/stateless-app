@@ -9,8 +9,9 @@ import (
 
 func Start() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /gtranslate", handleGtranslate)
-	mux.HandleFunc("GET /artificial", handleArtificial)
+	mux.HandleFunc("GET /gtranslate/{lang}", handleGtranslate) // gtranslate/en-uk?text=...
+	mux.HandleFunc("GET /artificial/{task}", handleArtificial) // artificial/guess-kanji?request=...
+	mux.HandleFunc("GET /grabber/{task}", handleGrabber)       // grabber/e2u?request=...
 	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Here we go!")
 	})

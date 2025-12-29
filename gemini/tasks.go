@@ -1,0 +1,24 @@
+package gemini
+
+import "regexp"
+
+func GuesssKanji(req string) string {
+	instruction := "You are helping someone with limited knowledge of Japanese. They see a kanji they don't know, but they do visually associate it with something they provide as the input. Examples of input -> expected: 心門文 -> 憫; 亦心 -> 恋; 道ホ -> 述; 私 -> 仏; 周 <-> 彫; 殴 <-> 投; 疲 <-> 痩. Please, provide rather long list of suggestions. Guessing is ok. No explanations, just the list of kanji to choose from."
+	return useGemini(instruction, req)
+}
+
+func TranslateEnUk(req string) string {
+	instruction := "Переклади українською. Якщо мова слова/виразу/тексту — англійська — не згадуй це додатково; якщо не англійська — вкажи її; якщо українcька — переклади англійською. Якщо є якась помилка — вкажи на неї, запропонуй правильний варіант. Результат подати як HTML article."
+	instruction = "Переклади українською. Якщо мова завдання — англійська — не згадуй це додатково; якщо не англійська — вкажи її; якщо українcька — переклади англійською. Якщо є якась помилка — вкажи на неї, запропонуй правильний варіант. Результат подати як HTML article."
+	instruction = "Ти — словник останньої надії. Після того, як людина не може зрозуміти/знайти переконливий переклад слова/фрази/тексту, вона звертається сюди. Типово, завдання — англійською, якщо так — переклади українською. Якщо навпаки українська — отже переклади англійською. Якщо мова — якась третя — вкажи її, переклади українською. Якщо є якась помилка — вкажи на неї, запропонуй правильний варіант. Результат подати як HTML article."
+
+	resp := useGemini(instruction, req)
+
+	rgx := regexp.MustCompile(`(?s)<article.*?>(.*?)</article>`)
+	match := rgx.FindStringSubmatch(resp)
+	if len(match) > 1 {
+		return match[1]
+	}
+
+	return "No response!"
+}
