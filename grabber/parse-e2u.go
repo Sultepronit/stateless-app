@@ -19,7 +19,8 @@ func isHeaderRight(header string, expected string) bool {
 }
 
 func isArticleMain(article *html.Node, query string) bool {
-	b := findNode(article, "b")
+	// b := findNode(article, "b")
+	b := findNode(article, Tag{"b", "", ""})
 	if b == nil {
 		return false
 	}
@@ -30,9 +31,9 @@ func isArticleMain(article *html.Node, query string) bool {
 }
 
 func UseE2u(req string) (string, error) {
-	url := "https://e2u.org.ua/s?w=" + url.QueryEscape(req) + "&dicts=all&highlight=on&filter_lines=on"
-	fmt.Println(url)
-	doc, err := grab(url, true)
+	u := "https://e2u.org.ua/s?w=" + url.QueryEscape(req) + "&dicts=all&highlight=on&filter_lines=on"
+	fmt.Println(u)
+	doc, err := grab(u, true)
 	if err != nil {
 		return "", err
 	}

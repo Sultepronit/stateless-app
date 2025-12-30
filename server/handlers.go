@@ -26,13 +26,25 @@ func handleArtificial(w http.ResponseWriter, r *http.Request) {
 	task := r.PathValue("task")
 	req := r.URL.Query().Get("request")
 	if task != "" && req != "" {
-		resp := ""
+		var resp string
+		var err error
+		ct := "text/plain"
+
 		switch task {
 		case "guess-kanji":
-			resp = gemini.GuesssKanji(req)
+			resp, err = gemini.GuesssKanji(req)
 		case "translate-en-uk":
-			resp = gemini.TranslateEnUk(req)
+			ct = "text/html"
+			resp, err = gemini.TranslateEnUk(req)
 		}
+
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", ct)
 		io.WriteString(w, resp)
 	}
 
@@ -48,6 +60,8 @@ func handleGrabber(w http.ResponseWriter, r *http.Request) {
 		switch task {
 		case "e2u":
 			resp, err = grabber.UseE2u(req)
+		case "slovnyk":
+			resp, err = grabber.UseSlovnyk(req)
 		}
 
 		if err != nil {
@@ -56,6 +70,7 @@ func handleGrabber(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		w.Header().Set("Content-Type", "text/html")
 		io.WriteString(w, resp)
 	}
 }

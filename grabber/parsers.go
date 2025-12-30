@@ -24,7 +24,7 @@ func checkAttribute(n *html.Node, attr string, value string) bool {
 	return false
 }
 
-func checkNode(n *html.Node, tag Tag) bool {
+func checkTag(n *html.Node, tag Tag) bool {
 	if n.Data == tag.name {
 		if tag.attrName == "" {
 			return true
@@ -42,7 +42,7 @@ func collectNodes(n *html.Node, tag Tag) []*html.Node {
 	traverse = func(n *html.Node) {
 		for c := n.FirstChild; c != nil; c = c.NextSibling {
 			if c.Type == html.ElementNode {
-				if checkNode(c, tag) {
+				if checkTag(c, tag) {
 					re = append(re, c)
 				} else {
 					traverse(c)
@@ -55,13 +55,15 @@ func collectNodes(n *html.Node, tag Tag) []*html.Node {
 	return re
 }
 
-func findNode(n *html.Node, tag string) *html.Node {
+// func findNode(n *html.Node, tag string) *html.Node {
+func findNode(n *html.Node, tag Tag) *html.Node {
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		if c.Type != html.ElementNode {
 			continue
 		}
 
-		if c.Data == tag {
+		// if c.Data == tag {
+		if checkTag(c, tag) {
 			return c
 		} else {
 			return findNode(c, tag)
