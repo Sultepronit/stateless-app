@@ -28,13 +28,13 @@ func handleArtificial(w http.ResponseWriter, r *http.Request) {
 	if task != "" && req != "" {
 		var resp string
 		var err error
-		ct := "text/plain"
+		ct := "text/plain; charset=utf-8"
 
 		switch task {
 		case "guess-kanji":
 			resp, err = gemini.GuesssKanji(req)
 		case "translate-en-uk":
-			ct = "text/html"
+			ct = "text/html; charset=utf-8"
 			resp, err = gemini.TranslateEnUk(req)
 		}
 
@@ -70,7 +70,7 @@ func handleGrabber(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		w.Header().Set("Content-Type", "text/html")
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		io.WriteString(w, resp)
 	}
 }
