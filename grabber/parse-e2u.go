@@ -2,6 +2,7 @@ package grabber
 
 import (
 	"fmt"
+	"log"
 	"net/url"
 	"regexp"
 	"strings"
@@ -27,11 +28,12 @@ func isArticleMain(article *html.Node, query string) bool {
 
 	header := getTextContent(b)
 
+	log.Println(header, query)
 	return isHeaderRight(header, query)
 }
 
-func UseE2u(req string) (string, error) {
-	u := "https://e2u.org.ua/s?w=" + url.QueryEscape(req) + "&dicts=all&highlight=on&filter_lines=on"
+func UseE2u(query string) (string, error) {
+	u := "https://e2u.org.ua/s?w=" + url.QueryEscape(query) + "&dicts=all&highlight=on&filter_lines=on"
 	fmt.Println(u)
 	doc, err := grab(u, true)
 	if err != nil {
@@ -50,7 +52,7 @@ func UseE2u(req string) (string, error) {
 
 		if checkAttribute(tag, "class", "result_row") {
 			articles["context"] = append(articles["context"], tag)
-		} else if isArticleMain(tag, "apple") {
+		} else if isArticleMain(tag, query) {
 			articles["main"] = append(articles["main"], tag)
 		} else {
 			articles["other"] = append(articles["other"], tag)
