@@ -2,6 +2,7 @@ package server
 
 import (
 	"io"
+	"log"
 	"net/http"
 	"stateless/gemini"
 	"stateless/grabber"
@@ -41,10 +42,18 @@ func handleGrabber(w http.ResponseWriter, r *http.Request) {
 	task := r.PathValue("task")
 	req := r.URL.Query().Get("request")
 	if task != "" && req != "" {
-		resp := ""
+		var resp string
+		var err error
+
 		switch task {
 		case "e2u":
-			grabber.UseE2u(req)
+			resp, err = grabber.UseE2u(req)
+		}
+
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
 		}
 
 		io.WriteString(w, resp)
