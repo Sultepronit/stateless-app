@@ -11,12 +11,12 @@ import (
 
 func handleGtranslate(w http.ResponseWriter, r *http.Request) {
 	lang := r.PathValue("lang")
-	text := r.URL.Query().Get("text")
-	if lang != "" && text != "" {
+	request := r.URL.Query().Get("request")
+	if lang != "" && request != "" {
 		resp := ""
 		switch lang {
 		case "en-uk":
-			resp = gtranslate.EnUk(text)
+			resp = gtranslate.EnUk(request)
 		}
 		io.WriteString(w, resp)
 	}
