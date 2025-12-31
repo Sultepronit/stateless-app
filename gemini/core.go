@@ -8,11 +8,14 @@ import (
 	"google.golang.org/genai"
 )
 
-func useGemini(instruction string, req string) (string, error) {
+func useGemini(instruction string, req string, smart bool) (string, error) {
 	models := []string{
 		"gemini-flash-latest", // "gemini-2.5-flash"
 		"gemini-3-flash-preview",
 		"gemini-2.5-flash-lite",
+	}
+	if smart {
+		models = models[:2]
 	}
 	// slices.Delete()
 	model := models[rand.IntN(len(models))]
