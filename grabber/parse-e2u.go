@@ -41,6 +41,9 @@ func UseE2u(query string) (string, error) {
 	}
 
 	tds := collectNodes(doc, Tag{"td", "", ""})
+	if len(tds) == 0 {
+		return "", nil
+	}
 
 	articles := map[string][]*html.Node{
 		"main":    {},
