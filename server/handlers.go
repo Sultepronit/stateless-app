@@ -62,6 +62,8 @@ func handleGrabber(w http.ResponseWriter, r *http.Request) {
 			resp, err = grabber.UseE2u(req)
 		case "slovnyk":
 			resp, err = grabber.UseSlovnyk(req)
+		case "jisho":
+			resp, err = grabber.UseJisho(req)
 		}
 
 		if err != nil {
