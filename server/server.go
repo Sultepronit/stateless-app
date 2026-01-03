@@ -13,9 +13,10 @@ func Start() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /gtranslate/{lang}", handleGtranslate) // gtranslate/en-uk?request=...
 	mux.HandleFunc("GET /artificial/{task}", handleArtificial) // artificial/guess-kanji?request=
-	mux.HandleFunc("GET /grabber/{task}", handleGrabber)       // grabber/e2u?request=...
+	mux.HandleFunc("GET /grabber/{task}", handleGrabber)       // grabber/e2u?request=
+
 	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Here we go!")
+		fmt.Fprint(w, "Test 001")
 	})
 
 	port := os.Getenv("PORT")

@@ -1,6 +1,7 @@
 package grabber
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/url"
@@ -15,7 +16,7 @@ func isHeaderRight(header string, expected string) bool {
 	header = spl.Split(header, 2)[0]
 	repl := strings.NewReplacer("|", "", "́", "")
 	header = repl.Replace(header)
-	// header = strings.TrimSpace(header)
+	header = strings.TrimSpace(header)
 	return strings.EqualFold(header, expected)
 }
 
@@ -62,15 +63,24 @@ func UseE2u(query string) (string, error) {
 		}
 	}
 
-	order := []string{"main", "other", "context"}
-	var sb strings.Builder
-	for _, group := range order {
-		sb.WriteString(`<article class="`)
-		sb.WriteString(group)
-		sb.WriteString(`">`)
-		sb.WriteString(nodesToHtml(articles[group]))
-		sb.WriteString(`</article>`)
+	// order := []string{"main", "other", "context"}
+	// var sb strings.Builder
+	// for _, group := range order {
+	// 	sb.WriteString(`<article class="`)
+	// 	sb.WriteString(group)
+	// 	sb.WriteString(`">`)
+	// 	sb.WriteString(nodesToHtml(articles[group]))
+	// 	sb.WriteString(`</article>`)
+	// }
+
+	// return sb.String(), nil
+
+	re := map[string]string{}
+	for k, v := range articles {
+		re[k] = nodesToHtml(v)
 	}
 
-	return sb.String(), nil
+	k, err := json.Marshal(re)
+
+	return string(k), err
 }
