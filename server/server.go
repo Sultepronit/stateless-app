@@ -11,17 +11,17 @@ import (
 
 func Start() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /gtranslate/{lang}", handleGtranslate) // gtranslate/en-uk?request=...
+	mux.HandleFunc("GET /gtranslate/{lang}", handleGtranslate) // gtranslate/en-uk?request=
 	mux.HandleFunc("GET /artificial/{task}", handleArtificial) // artificial/guess-kanji?request=
 	mux.HandleFunc("GET /grabber/{task}", handleGrabber)       // grabber/e2u?request=
 
 	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Test 001")
+		fmt.Fprint(w, "Here we go!")
 	})
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "8081"
 	}
 
 	fmt.Printf("Listening on port: %s\n", port)

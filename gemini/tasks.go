@@ -53,3 +53,20 @@ func TranslateEnUk(req string) (string, error) {
 
 	return "No response!", nil
 }
+
+func TranslateJaUk(req string) (string, error) {
+	instruction := "Ти — ШІ-словник. Твоє звдання — допомогти перекласти/зрозуміти японський текст/вираз. Поясни граматику, якщо та — складна. Якщо є якась помилка — вкажи на неї, запропонуй правильний варіант. Результат подати як HTML article (лише корисна інформація — жодного зайвого тексту)."
+	
+	resp, err := useGemini(instruction, req, false)
+	if err != nil {
+		return "", err
+	}
+
+	rgx := regexp.MustCompile(`(?s)<article.*?>(.*?)</article>`)
+	match := rgx.FindStringSubmatch(resp)
+	if len(match) > 1 {
+		return match[1], nil
+	}
+
+	return "No response!", nil
+}

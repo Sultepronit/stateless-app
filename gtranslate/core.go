@@ -29,6 +29,19 @@ func EnUk(text string) string {
 	return result
 }
 
+func JaUk(text string) string {
+	source := "ja"
+	target := "uk"
+
+	result, err := translateText(text, source, target)
+	if err != nil {
+		log.Fatalf("Помилка перекладу: %v", err)
+	}
+
+	fmt.Println(result)
+	return result
+}
+
 func translateText(text string, source string, target string) (string, error) {
 	projectID := os.Getenv("PROJECT_ID")
 	location := "global"

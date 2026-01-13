@@ -17,6 +17,8 @@ func handleGtranslate(w http.ResponseWriter, r *http.Request) {
 		switch lang {
 		case "en-uk":
 			resp = gtranslate.EnUk(request)
+		case "ja-uk":
+			resp = gtranslate.JaUk(request)
 		}
 		io.WriteString(w, resp)
 	}
@@ -36,6 +38,9 @@ func handleArtificial(w http.ResponseWriter, r *http.Request) {
 		case "translate-en-uk":
 			ct = "text/html; charset=utf-8"
 			resp, err = gemini.TranslateEnUk(req)
+		case "translate-ja-uk":
+			ct = "text/html; charset=utf-8"
+			resp, err = gemini.TranslateJaUk(req)
 		}
 
 		if err != nil {
