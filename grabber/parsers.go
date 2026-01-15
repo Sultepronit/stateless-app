@@ -2,7 +2,7 @@ package grabber
 
 import (
 	"bytes"
-	"os"
+	"slices"
 	"strings"
 
 	"golang.org/x/net/html"
@@ -20,12 +20,7 @@ func checkAttribute(n *html.Node, attr string, expVal string) bool {
 			if a.Val == expVal {
 				return true
 			} else {
-				for _, val := range strings.Fields(a.Val) {
-					if val == expVal {
-						return true
-					}
-				}
-				return false
+				return slices.Contains(strings.Fields(a.Val), expVal)
 			}
 		}
 	}
@@ -149,6 +144,38 @@ func unwrapTags(n *html.Node, tag string) {
 	}
 }
 
+func filterClasses(input string, allowed map[string]struct{}) string {
+	classes := strings.Fields(input)
+	var re []string
+
+	for _, c := range classes {
+		if _, ok := allowed[c]; ok {
+			re = append(re, c)
+		}
+	}
+
+	return strings.Join(re, " ")
+}
+
+func cleanClasses(n *html.Node, allowed map[string]struct{}) {
+	for i, a := range n.Attr {
+		if a.Key == "class" {
+			ac := filterClasses(a.Val, allowed)
+			if ac == "" {
+				n.Attr = slices.Delete(n.Attr, i, i+1)
+			} else {
+				n.Attr[i].Val = ac
+			}
+		}
+	}
+
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		if c.Type == html.ElementNode {
+			cleanClasses(c, allowed)
+		}
+	}
+}
+
 func nodeToHtml(n *html.Node) string {
 	var b bytes.Buffer
 	html.Render(&b, n)
@@ -165,9 +192,9 @@ func nodesToHtml(nodes []*html.Node) string {
 	return b.String()
 }
 
-func saveToFile(name string, text string) {
-	err := os.WriteFile(name, []byte(text), 0644)
-	if err != nil {
-		panic(err)
-	}
-}
+// func saveToFile(name string, text string) {
+// 	err := os.WriteFile(name, []byte(text), 0644)
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// }
