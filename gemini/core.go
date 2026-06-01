@@ -8,6 +8,8 @@ import (
 	"google.golang.org/genai"
 )
 
+// https://ai.google.dev/api/models#models_list-SHELL
+// https://ai.google.dev/gemini-api/docs/api-key#rest
 func useGemini(instruction string, req string, smart bool) (string, error) {
 	models := []string{
 		"gemini-flash-latest", // "gemini-2.5-flash"
@@ -19,6 +21,8 @@ func useGemini(instruction string, req string, smart bool) (string, error) {
 	}
 	// slices.Delete()
 	model := models[rand.IntN(len(models))]
+	model = "gemini-3.1-flash-tts-preview"
+	model = "gemini-pro-latest"
 
 	ctx := context.Background()
 	// The client gets the API key from the environment variable `GEMINI_API_KEY`.

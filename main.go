@@ -12,5 +12,8 @@ import (
 
 func main() {
 	godotenv.Load()
+
+	// gemini.Test()
+
 	server.Start()
 }
