@@ -14,6 +14,7 @@ func main() {
 	godotenv.Load()
 
 	// gemini.Test()
+	// gtranslate.JaUk("Hello, how are you?")
 
 	server.Start()
 }

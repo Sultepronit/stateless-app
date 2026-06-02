@@ -48,6 +48,7 @@ func translateText(text string, source string, target string) (string, error) {
 
 	ctx := context.Background()
 	client, err := translate.NewTranslationClient(ctx)
+
 	if err != nil {
 		return "", err
 	}

@@ -3,7 +3,7 @@ package gemini
 import (
 	"context"
 	"log"
-	"math/rand/v2"
+	"os"
 
 	"google.golang.org/genai"
 )
@@ -11,18 +11,17 @@ import (
 // https://ai.google.dev/api/models#models_list-SHELL
 // https://ai.google.dev/gemini-api/docs/api-key#rest
 func useGemini(instruction string, req string, smart bool) (string, error) {
-	models := []string{
-		"gemini-flash-latest", // "gemini-2.5-flash"
-		"gemini-3-flash-preview",
-		"gemini-2.5-flash-lite",
-	}
-	if smart {
-		models = models[:2]
-	}
-	// slices.Delete()
-	model := models[rand.IntN(len(models))]
-	model = "gemini-3.1-flash-tts-preview"
-	model = "gemini-pro-latest"
+	// models := []string{
+	// 	"gemini-flash-latest", // "gemini-2.5-flash"
+	// 	"gemini-3-flash-preview",
+	// 	"gemini-2.5-flash-lite",
+	// }
+	// if smart {
+	// 	models = models[:2]
+	// }
+	// // slices.Delete()
+	// model := models[rand.IntN(len(models))]
+	model := os.Getenv("GEMINI_MODEL")
 
 	ctx := context.Background()
 	// The client gets the API key from the environment variable `GEMINI_API_KEY`.

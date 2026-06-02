@@ -1,4 +1,4 @@
 /archive
 .env
 env*
-secret*
+*secret*
