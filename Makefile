@@ -1,8 +1,13 @@
-.PHONY: build run
+.PHONY: build deploy
+
+SERVICE=go-lang-service
 
 build: 
-	CGO_ENABLED=0 go build -o app .
+	@echo "Builging..."
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ./build/app .
+	@echo "Done!"
 
-run:
-# 	CGO_ENABLED=0 go build -o test .; ./test
-	CGO_ENABLED=0 go run .
+deploy: build
+	@echo "Deploying..."
+	cd ../../.. && docker compose restart $(SERVICE)
+	@echo "Done!"
