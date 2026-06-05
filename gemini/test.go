@@ -45,3 +45,18 @@ func Test() {
 		}
 	}
 }
+
+// var hotInst = &instruct{path: "inst.json"}
+
+// func TestInst() {
+// 	// hotInst := &instruct{path: "inst.json"}
+// 	if err := hotInst.reloadIfNeeded(); err != nil {
+// 		log.Println(err)
+// 	}
+
+// 	inst := hotInst.get()
+// 	log.Println(inst)
+// 	instCode := "translateEnUk"
+// 	log.Println(inst[instCode][0])
+
+// }

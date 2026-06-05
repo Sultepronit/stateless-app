@@ -10,7 +10,11 @@ import (
 
 // https://ai.google.dev/api/models#models_list-SHELL
 // https://ai.google.dev/gemini-api/docs/api-key#rest
-func useGemini(instruction string, req string, smart bool) (string, error) {
+
+var hotInst = &instruct{path: "inst.json"}
+
+// func useGemini(instruction string, req string, smart bool) (string, error) {
+func useGemini(instCode string, req string, smart bool) (string, error) {
 	// models := []string{
 	// 	"gemini-flash-latest", // "gemini-2.5-flash"
 	// 	"gemini-3-flash-preview",
@@ -21,7 +25,16 @@ func useGemini(instruction string, req string, smart bool) (string, error) {
 	// }
 	// // slices.Delete()
 	// model := models[rand.IntN(len(models))]
+
 	model := os.Getenv("GEMINI_MODEL")
+
+	if err := hotInst.reloadIfNeeded(); err != nil {
+		log.Println(err)
+	}
+
+	inst := hotInst.get()
+	// log.Println(inst)
+	log.Println(inst[instCode][0])
 
 	ctx := context.Background()
 	// The client gets the API key from the environment variable `GEMINI_API_KEY`.
@@ -33,7 +46,8 @@ func useGemini(instruction string, req string, smart bool) (string, error) {
 	config := &genai.GenerateContentConfig{
 		SystemInstruction: &genai.Content{
 			Parts: []*genai.Part{
-				{Text: instruction},
+				// {Text: instruction},
+				{Text: inst[instCode][0]},
 			},
 		},
 	}
